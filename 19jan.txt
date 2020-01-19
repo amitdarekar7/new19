@@ -1,3 +1,5 @@
 Hi 19 jan
 
 welcome to github
+
+new to java
