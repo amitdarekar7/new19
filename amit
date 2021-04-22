@@ -1,0 +1,36 @@
+from django import forms
+from django.core import validators
+
+def start_with_s(value):
+    if value[0]!='s':
+        raise forms.ValidationError('name should start with s')
+
+class Student(forms.Form):
+    name=forms.CharField(max_length=20,validators=[start_with_s])
+    age=forms.IntegerField(max_value=10,label='student_age',initial=24)
+    department=forms.CharField(max_length=20)
+
+    def clean_name(self,name):
+        if len(name)<4:
+            raise forms.ValidationError('name should be greater than 4 character')
+        return name
+
+    def clean_age(self,age):
+        if age<18:
+            raise forms.ValidationError('Age should be more than 18')
+        return age
+
+#------------------------------------------------------
+
+    def clean(self):
+        cleaned_data=super().clean()
+        valname=self.cleaned_data['name']
+        if len(valname)<4:
+            raise forms.ValidationError('name length should be greater than 4')
+        return valname
+
+        valage=self.cleaned_data['age']
+        if valage<18:
+            raise forms.ValidationError('age should be more than 18')
+        return valage
+
